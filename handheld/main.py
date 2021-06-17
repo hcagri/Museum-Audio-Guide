@@ -1,4 +1,3 @@
-from numpy.core.getlimits import _register_known_types
 import paho.mqtt.client as mqtt
 import time
 import serial
