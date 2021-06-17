@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Login Page{% endblock %}
+
+{% block content %}
+    {% with messages = get_flashed_messages() %}
+        {% if messages%}
+            {% for msg in messages %}
+                <p>{{msg}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+<h1> Happy to Have You </h1>
+<br>
+<br>
+<br>
+
+<form action="#" method="post">
+    <h5><pre>Device Number:<input type="number", name="dn" /></pre></h5>
+    <pre>           <input type="submit", value="Checkout" /></pre>
+</form>
+{% endblock %}

@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block meta %}
+    <meta http-equiv="refresh" content="1.5">
+{% endblock %}
+
+{% block title %}MAP{% endblock %}
+
+{% block content %}
+<h2>The Map of the Museum</h2>
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    {% for message in messages %}
+      <p>{{ message }}</p>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+
+
+<canvas id="canvas" width="900" height="600"
+        style="border: 1px solid;border-radius: 10px;background: #f0f0f0;"></canvas>
+
+<script>
+    var canvas = document.getElementById('canvas');
+    var ctx = canvas.getContext('2d');
+    
+    {% if u_data != 0 %}
+      
+      {% for nm,pos, col in u_data %}
+          {% if pos != None %}
+          ctx.font = "30px Arial";
+          ctx.fillStyle = '{{ col }}';
+          ctx.fillText("{{ nm }}", {{100 + 100*pos[0]}} -30, {{100 + 100*pos[1]}} -15);
+          ctx.fillStyle = '{{ col }}';
+          ctx.fillRect({{100 + 100*pos[0] - 5}},{{100 + 100*pos[1] - 5}},10,10);
+          {% endif %}
+      {% endfor %}
+    {% endif %}
+
+
+    // Draw Grid Like Pattern
+    var drawGrid = function(ctx, w, h, step) {
+        ctx.beginPath();
+        for (var x=0;x<=w;x+=step) {
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, h);
+        }
+
+        ctx.strokeStyle = '#CDC6C4';
+        ctx.lineWidth = 1;
+
+        ctx.stroke();
+
+        ctx.beginPath();
+        for (var y=0;y<=h;y+=step) {
+                ctx.moveTo(0, y);
+                ctx.lineTo(w, y);
+        }
+        ctx.strokeStyle = '#CDC6C4';
+        ctx.lineWidth = 1;
+
+        ctx.stroke();
+    };
+
+    drawGrid(ctx, 1000, 600, 100);
+
+
+    {% if art != 0 %}
+      {% for apos,color in art %}
+          
+        ctx.font = "20px Arial";
+        ctx.beginPath();
+        ctx.arc({{100 + apos[0]}},{{100 + apos[1]}}, 20, 0, 2 * Math.PI);
+        ctx.fillStyle = "{{color}}";
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillText("{{ apos[0],apos[1] }}", {{100 + apos[0]}} -30, {{100 + apos[1]}} -25);
+        ctx.fillStyle = "black";
+      {% endfor %}
+    {% endif %}
+
+    {% if anc_pos != 0 %}
+      {% for locs in anc_pos %}
+
+          ctx.beginPath();
+          ctx.arc({{100 + locs[0]}},{{100 + locs[1]}}, 10, 0, 2 * Math.PI);
+          ctx.fillStyle = '#212F3C';
+          ctx.fill();
+          ctx.stroke();
+
+      {% endfor %}
+    {% endif %}
+
+
+
+</script>
+
+{% endblock %}
